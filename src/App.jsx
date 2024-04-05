@@ -1,35 +1,56 @@
-import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./ui/Home";
-import Menu, { loader as menuLoader } from "./features/menu/Menu";
-import CreateOrder from "./features/cart/CreateOrder";
-import User from "./features/user/User.jsx";
-import Cart from "./features/cart/Cart.jsx";
-import Order, { loader as orderLoader } from "./features/orders/Order";
-import { AppLayout } from "./ui/AppLayout";
-import ErrorPage from "./ui/ErrorPage";
+import Menu, { loader as menu_loader } from "./features/menu/Menu";
+import Cart from "./features/cart/Cart";
+import CreateOrder, {
+  action as create_order_action,
+} from "./features/orders/CreateOrder";
+import Order, { loader as order_loader_action } from "./features/orders/Order";
+import { action as update_order } from "./features/orders/UpdateOrder";
+import Error from "./ui/Error";
+import AppLayout from "./ui/AppLayout";
 
 const router = createBrowserRouter([
   {
     element: <AppLayout />,
-    errorElement: <ErrorPage />,
+    errorElement: <Error />,
     children: [
-      { path: "/", element: <Home /> },
+      {
+        path: "/",
+        element: <Home />,
+      },
       {
         path: "/menu",
         element: <Menu />,
-        loader: menuLoader,
-        errorElement: <ErrorPage />,
+        loader: menu_loader,
+        errorElement: <Error />,
       },
-      { path: "/cart", element: <Cart /> },
-      { path: "/order/new", element: <CreateOrder /> },
-      { path: "/order/:id", element: <Order />, loader: orderLoader },
-      { path: "/user", element: <User /> },
+      {
+        path: "/cart",
+        element: <Cart />,
+      },
+      {
+        path: "/order/new",
+        element: <CreateOrder />,
+        action: create_order_action,
+      },
+      {
+        path: "/order/:order_id",
+        element: <Order />,
+        loader: order_loader_action,
+        errorElement: <Error />,
+        action: update_order,
+      },
     ],
   },
 ]);
+
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+    </>
+  );
 }
 
 export default App;

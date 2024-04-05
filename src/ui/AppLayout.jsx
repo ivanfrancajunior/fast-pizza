@@ -1,21 +1,27 @@
 import { Outlet, useNavigation } from "react-router-dom";
-import Header from "./Header.jsx";
-import CartOverview from "../features/cart/CartOverview.jsx";
-import Loader from "./Loader.jsx";
+import CartOverview from "../features/cart/CartOverview";
+import Header from "./Header";
+import Loader from "./Loader";
 
-export const AppLayout = () => {
+const AppLayout = () => {
   const navigation = useNavigation();
-  console.log(navigation);
-  const isLoading = useNavigation.state === "loading";
+  const is_loading = navigation.state === "loading";
+
   return (
-    <div>
-      {isLoading && <Loader />}
+    <div className="grid h-screen grid-rows-[auto_1fr_auto]">
+      {is_loading && <Loader />}
+
       <Header />
-      <main>
-        <Outlet />
-      </main>
-      <CartOverview />
+      <div className="overflow-scroll">
+        <main className="mx-auto max-w-3xl">
+          <Outlet />
+        </main>
+      </div>
+      <footer>
+        <CartOverview />
+      </footer>
     </div>
   );
 };
-//TODO: ADICIONAR AO README O STATUS DE LOADIND COM NOVO ROUTER DOM
+
+export default AppLayout;
